@@ -8,17 +8,23 @@ EasyEscrow is a decentralized, multi-chain escrow service designed to facilitate
 ## Project Structure
 
 ```text
-easy-escrow/
 
-├── hardhat.config.js          # Hardhat config with networks
-├── vite.config.ts             # Vite build configuration (custom IIFE output, CSS extraction)
-├── index.html                 # Main application entry point (UI layout and modals)
+├── index.html                       # Main application entry point (UI layout and modals)
+├── hardhat.config.js                # Hardhat config with networks
+├── vite.config.ts                   # Vite build configuration (custom IIFE output, CSS extraction)
 ├── src/
-│   ├── main.ts                # Core application logic, Wagmi state, and contract interactions
-│   ├── main.css               # Custom styling
-│   └── config.ts              # Network configurations, contract addresses, and token metadata
+│   ├── main.ts                      # Core application logic, Wagmi state, and contract interactions
+│   ├── main.css                     # Custom styling
+│   └── config.ts                    # Network configurations, contract addresses, and token metadata
+├── artifacts/                       # Compiled smart contracts, need for deploy to blockchain
+├── scripts/          
+│   ├── deploy.js                    # Deploy smart contract to blockchain
+│   ├── estimate.js                  # Ask gas estimate and price from blockchain
+│   └── deploy-nonce-0-speed-up.js   # Speed up deploy with extra fee if it stuck
 └── contracts/
-    └── EasyEscrow.sol         # The core Solidity smart contract managing the escrow logic
+    └── EasyEscrow.sol               # The core Solidity smart contract managing the escrow logic
+    
+    
 ```
 ## Features
 
