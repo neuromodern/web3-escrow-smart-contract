@@ -19,21 +19,21 @@ easy-escrow/
 │   └── config.ts              # Network configurations, contract addresses, and token metadata
 └── contracts/
     └── EasyEscrow.sol         # The core Solidity smart contract managing the escrow logic
-
+```
 ## Features
 
-**Multi-Chain Support:** Fully compatible with Ethereum Mainnet, Sepolia, BSC, Polygon, Base, Arbitrum, and Optimism.
-**Native & ERC-20 Assets:** Securely lock both native blockchain coins (e.g., ETH, BNB) and standard ERC-20 tokens (e.g., USDC, USDT) in the smart contract.
-**Smart Roles:** 
-**Seller:** Delivers the agreed-upon asset or service.
-**Buyer:** Deposits the funds and can request a refund if deadlines are missed.
-**Arbiter:** A trusted third party who resolves disputes and distributes funds for a set fee.
+* **Multi-Chain Support:** Fully compatible with Ethereum Mainnet, Sepolia, BSC, Polygon, Base, Arbitrum, and Optimism. 
+* **Native & ERC-20 Assets:** Securely lock both native blockchain coins (e.g., ETH, BNB) and standard ERC-20 tokens (e.g., USDC, USDT) in the smart contract. 
+* **Smart Roles:** 
+* **Seller:** Delivers the agreed-upon asset or service.
+* **Buyer:** Deposits the funds and can request a refund if deadlines are missed.
+* **Arbiter:** A trusted third party who resolves disputes and distributes funds for a set fee.
 
 ---
 
 ## Tech Stack
 
-**Frontend:** HTML5, CSS3, TypeScript
-**Web3 Integration:** [Viem](https://viem.sh/), [Wagmi](https://wagmi.sh/), and [AppKit (WalletConnect)](https://walletconnect.com/)
-**Build Tool:** [Vite](https://vitejs.dev/) (Configured for IIFE non-module output)
-**Smart Contracts:** Solidity (OpenZeppelin Contracts)    
+* **Frontend:** HTML5, CSS3, TypeScript
+* **Web3 Integration:** [Viem](https://viem.sh/), [Wagmi](https://wagmi.sh/), and [AppKit (WalletConnect)](https://walletconnect.com/)
+* **Build Tool:** [Vite](https://vitejs.dev/) (Configured for IIFE non-module output)
+* **Smart Contracts:** Solidity (OpenZeppelin Contracts)    
