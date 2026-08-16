@@ -1,2 +1,39 @@
-# web3-escrow-smart-contract
-Modern web 3.0 smart contract dApp that allow you to deal with third-party arbiter
+# EasyEscrow Web3 dApp
+
+EasyEscrow is a decentralized, multi-chain escrow service designed to facilitate secure transactions between a Buyer and a Seller, overseen by a neutral Arbiter (Guarantor). Built for the modern Web3 ecosystem, it supports both Native coins and ERC-20 tokens across multiple networks.
+
+
+---
+
+## Project Structure
+
+```text
+easy-escrow/
+
+├── hardhat.config.js          # Hardhat config with networks
+├── vite.config.ts             # Vite build configuration (custom IIFE output, CSS extraction)
+├── index.html                 # Main application entry point (UI layout and modals)
+├── src/
+│   ├── main.ts                # Core application logic, Wagmi state, and contract interactions
+│   ├── main.css               # Custom styling
+│   └── config.ts              # Network configurations, contract addresses, and token metadata
+└── contracts/
+    └── EasyEscrow.sol         # The core Solidity smart contract managing the escrow logic
+
+## Features
+
+* **Multi-Chain Support:** Fully compatible with Ethereum Mainnet, Sepolia, BSC, Polygon, Base, Arbitrum, and Optimism.
+* **Native & ERC-20 Assets:** Securely lock both native blockchain coins (e.g., ETH, BNB) and standard ERC-20 tokens (e.g., USDC, USDT) in the smart contract.
+* **Smart Roles:** 
+  * **Seller:** Delivers the agreed-upon asset or service.
+  * **Buyer:** Deposits the funds and can request a refund if deadlines are missed.
+  * **Arbiter:** A trusted third party who resolves disputes and distributes funds for a set fee.
+
+---
+
+## Tech Stack
+
+* **Frontend:** HTML5, CSS3, TypeScript
+* **Web3 Integration:** [Viem](https://viem.sh/), [Wagmi](https://wagmi.sh/), and [AppKit (WalletConnect)](https://walletconnect.com/)
+* **Build Tool:** [Vite](https://vitejs.dev/) (Configured for IIFE non-module output)
+* **Smart Contracts:** Solidity (OpenZeppelin Contracts)    
