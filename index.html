@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EasyEscrow Web3</title>
+  <link rel="stylesheet" href="/src/main.css" />
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header>
+    <div class="logo">EasyEscrow</div>
+
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <!-- AppKit native network switcher -->
+      <appkit-network-button></appkit-network-button>
+      <appkit-button balance="hide"></appkit-button>
+    </div>
+  </header>
+    <div class="header-links">
+      <a href="https://github.com/neuromodern/web3-escrow-smart-contract/" target="_blank">Github</a> |
+      <a href="https://archetype.cam/dapp/escrow-with-arbiter-smart-contract/" target="_blank">Dapp on Acrhetype.cam</a> |
+      <a href="https://etherscan.io/address/0xAC4afa319977b75693aac25d44E2DD17ce32336f" target="_blank">Contract on Etherscan</a> |
+      <a href="https://medium.com/@neuromodern/building-web3-escrow-smart-contract-e49e9f48ab2f" target="_blank">Article on medium.com</a>
+      
+    </div>
+  <main id="app-container">
+
+    <!-- STATE 1: Disconnected -->
+    <section id="state-disconnected" class="view-state hidden">
+      <h2>Welcome to EasyEscrow</h2>
+      <p>Please connect your wallet to create or view escrow trades.</p>
+    </section>
+
+    <!-- STATE 2: Wrong Network -->
+    <section id="state-wrong-network" class="view-state hidden">
+      <h2>Unsupported Network</h2>
+      <p>Please switch to a supported network (e.g., Sepolia, BSC, Polygon).</p>
+    </section>
+
+    <!-- STATE 3: Loading / Tx Pending -->
+    <section id="state-loading" class="view-state hidden">
+      <div class="spinner"></div>
+      <h2 id="loading-text">Loading from blockchain...</h2>
+    </section>
+
+    <!-- STATE 4: Home (Create Trade Dashboard) -->
+    <section id="state-home" class="view-state hidden">
+      <div class="section-header">
+        <h2>Create New Escrow</h2>
+        <button id="btn-open-popup" class="action-btn">Open Escrow by ID</button>
+      </div>
+
+      <p><strong>Current Network:</strong> <span id="ui-current-network" style="color: var(--primary); font-weight: bold;">--</span></p>
+
+      <div class="card">
+        <form id="create-trade-form" class="escrow-form">
+          <div class="form-group">
+            <label for="input-seller">Seller Wallet Address</label>
+            <input type="text" id="input-seller" placeholder="0x..." required />
+          </div>
+
+          <div class="form-group">
+            <label for="input-arbiter">Arbiter (Guarantor) Address</label>
+            <input type="text" id="input-arbiter" placeholder="0x..." required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-amount">Base Amount</label>
+              <input type="number" id="input-amount"  step="any" placeholder="0.05" required />
+            </div>
+
+            <div class="form-group">
+              <label for="input-token">Token</label>
+              <select id="input-token" required>
+                <!-- Populated dynamically via main.ts -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input-arbiter-fee">Arbiter Fee (in selected token)</label>
+            <input type="number" id="input-arbiter-fee" step="any" value="0.001" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-seller-timeout">Seller Deadline (Days)</label>
+              <!-- Disabled by default, set to 0 -->
+              <input type="number" id="input-seller-timeout" value="0" min="0" disabled required />
+            </div>
+            <div class="form-group">
+              <label for="input-arbiter-timeout">Arbiter Deadline (Days)</label>
+              <input type="number" id="input-arbiter-timeout" value="14" min="1" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <!-- Unchecked by default, updated ID -->
+              <input type="checkbox" id="input-require-seller" />
+              Require Seller Confirmation (Status: AwaitingSeller)
+            </label>
+          </div>
+
+          <button type="submit" class="primary-btn" id="btn-create-trade">Deploy Escrow Transaction</button>
+        </form>
+
+        <div id="create-result-box" class="hidden">
+          <hr/>
+          <p style="color: green; font-weight: bold; font-size: 1.1rem;">Trade created successfully!</p>
+          <input type="text" id="shareable-link" readonly />
+
+          <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+            <button id="btn-copy-link" class="action-btn">Copy Link</button>
+            <button id="btn-save-details" class="action-btn">Save Details (.txt)</button>
+            <button id="btn-open-created-escrow" class="primary-btn">Open Escrow</button>
+          </div>
+
+          <div style="margin-top: 1.5rem; text-align: center;">
+            <button id="btn-create-another" class="action-btn" style="background: transparent; color: var(--text-main); text-decoration: underline; border: none;">Create another trade</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATE 5: Escrow View (Trade details & Roles) -->
+    <section id="state-escrow-view" class="view-state hidden">
+      <div class="section-header">
+        <h2>Escrow Trade <span id="ui-trade-id">#--</span></h2>
+        <button id="btn-new-escrow" class="action-btn">New Escrow</button>
+      </div>
+
+      <div class="card trade-details">
+        <p><strong>Status:</strong> <span id="ui-status">Loading...</span></p>
+        <p><strong>Buyer:</strong> <span id="ui-buyer">--</span></p>
+        <p><strong>Seller:</strong> <span id="ui-seller">--</span></p>
+        <p><strong>Arbiter:</strong> <span id="ui-arbiter">--</span></p>
+        <p><strong>Amount:</strong> <span id="ui-amount">--</span></p>
+
+        <!-- Action Buttons Panel -->
+        <div id="action-panel" class="action-panel hidden">
+          <hr/>
+          <p id="role-indicator" class="role-badge"></p>
+          <h3>Your Actions</h3>
+
+          <!-- Seller Actions -->
+          <button id="btn-seller-deliver" class="action-btn hidden">Confirm Delivery</button>
+
+          <!-- Arbiter Actions -->
+          <button id="btn-arbiter-resolve-buyer" class="action-btn hidden">Resolve: Refund Buyer</button>
+          <button id="btn-arbiter-resolve-seller" class="action-btn hidden">Resolve: Pay Seller</button>
+
+          <!-- Buyer Actions -->
+          <button id="btn-buyer-refund-seller" class="action-btn hidden">Refund (Seller Timeout)</button>
+          <button id="btn-buyer-refund-arbiter" class="action-btn hidden">Refund (Arbiter Timeout)</button>
+        </div>
+
+        <div id="observer-panel" class="hidden">
+          <hr/>
+          <p><em>You are viewing this trade as an observer. You have no actions available.</em></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Popup Modal for Opening Escrow by ID -->
+  <div id="modal-open-escrow" class="modal hidden">
+    <div class="modal-content card">
+      <h3>Open Existing Escrow</h3>
+      <p style="font-size: 0.9rem; margin-bottom: 1rem;">Enter the Escrow ID to view details:</p>
+      <input type="number" id="input-escrow-id" placeholder="e.g. 1" min="1" step="1" />
+      <div class="modal-actions">
+        <button id="btn-cancel-modal" class="action-btn">Cancel</button>
+        <button id="btn-confirm-modal" class="primary-btn">Open Escrow</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
