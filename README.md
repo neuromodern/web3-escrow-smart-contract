@@ -38,6 +38,17 @@ Getting started is easy.
 **Step 1 is all you need** to use the dApp immediately with the existing, secure smart contract. Steps 2 and 3 are for advanced users who want full control over the platform fees.
 
 ### Step 1: The Easy Way (Use Existing Contract)
+Download and Run 
+
+`git clone https://github.com/neuromodern/web3-escrow-smart-contract.git`
+
+`cd web3-escrow-smart-contract`
+
+`npm install`
+
+`npm run dev`
+
+
 To run this dApp anywhere, you only need to connect a wallet provider:
 
 * Get a free Project ID from [Reown](https://reown.com/) (formerly Web3Modal).
@@ -70,13 +81,14 @@ HARDHAT_TELEMETRY_OPTOUT=false
 ```
 * Add your deployer wallet's private key to a `.env` file.
 * Get and add [alchemy.com](https://alchemy.com/) key to `alch_KEY`
-* Compile and deploy via Hardhat (`npx hardhat run scripts/deploy.js --network <network_name>`).
+* Compile via Hardhat  (`npx hardhat compile`)
+* Deploy via Hardhat (`npx hardhat run scripts/deploy.js --network <network_name>`).
 * Update the new contract addresses in `src/config.ts`.
 * **For a detailed, step-by-step tutorial, read the full article:** [Building a Web3 Escrow Smart Contract on Medium](https://medium.com/@neuromodern/building-web3-escrow-smart-contract-e49e9f48ab2f).
 
 ### Step 3: Verify on Etherscan (Optional)
 Get `ETHERSCAN_API_KEY` for `.env`
-* For transparency, verify your custom contract on block explorers using `npx hardhat verify`.
+* For transparency, verify your custom contract on block explorers using `npx hardhat verify --network sepolia 0x... // your smart contract address`.
 
 
 
