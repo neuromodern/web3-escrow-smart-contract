@@ -44,17 +44,38 @@ To run this dApp anywhere, you only need to connect a wallet provider:
 * Paste it into `src/main.ts` (`const projectId = 'YOUR_KEY';`).
 * **That's it!** The dApp is fully functional and ready to use.
 
+
+
 ### Step 2: Deploy Your Own Contract (Advanced and need a fee for networks)
 
 If you want to route the 0.5% platform fee to your own wallet (or set it to 0), you must deploy your own instance of the contract:
 
+Create `.env` file
+```text
+PRIVATE_KEY=KEY
+
+SEPOLIA_RPC_URL="https://ethereum-sepolia-rpc.publicnode.com"
+
+# Mainnets (Production)
+MAINNET_RPC_URL="https://eth-mainnet.g.alchemy.com/v2/alch_KEY"
+BSC_RPC_URL="https://bsc-dataseed.binance.org/"
+BASE_RPC_URL="https://mainnet.base.org"
+ARBITRUM_RPC_URL="https://arb-mainnet.g.alchemy.com/v2/alch_KEY"
+OPTIMISM_RPC_URL="https://opt-mainnet.g.alchemy.com/v2/alch_KEY"
+POLYGON_RPC_URL="https://polygon-mainnet.g.alchemy.com/v2/alch_KEY"
+
+ETHERSCAN_API_KEY=KEY
+
+HARDHAT_TELEMETRY_OPTOUT=false
+```
 * Add your deployer wallet's private key to a `.env` file.
+* Get and add [alchemy.com](https://alchemy.com/) key to `alch_KEY`
 * Compile and deploy via Hardhat (`npx hardhat run scripts/deploy.js --network <network_name>`).
 * Update the new contract addresses in `src/config.ts`.
 * **For a detailed, step-by-step tutorial, read the full article:** [Building a Web3 Escrow Smart Contract on Medium](https://medium.com/@neuromodern/building-web3-escrow-smart-contract-e49e9f48ab2f).
 
 ### Step 3: Verify on Etherscan (Optional)
-
+Get `ETHERSCAN_API_KEY` for `.env`
 * For transparency, verify your custom contract on block explorers using `npx hardhat verify`.
 
 
